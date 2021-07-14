@@ -52,6 +52,10 @@ with open(fname, 'r') as fh:
 ## Merged pull requests over time
 
 ```{code-cell}
+---
+tags: [hide-input]
+---
+
 merged_prs = [d for d in data if d['node']['state'] == 'MERGED']
 merge_dates = np.array([r['node']['mergedAt'] for r in merged_prs], dtype=np.datetime64)
 binsize = np.timedelta64(14, 'D')
@@ -59,9 +63,7 @@ date_bins = np.arange(merge_dates[0], merge_dates[-1], binsize)
 h, be = np.histogram(merge_dates, date_bins)
 bc = be[:-1] + binsize / 2
 smoothing_interval = 8  # in units of bin-width
-```
 
-```{code-cell}
 fig, ax = plt.subplots(figsize=(16, 12))
 ax.bar(bc, h, width=binsize, label="Raw")
 ax.plot(
