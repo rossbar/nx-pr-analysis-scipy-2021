@@ -3,3 +3,4 @@ matplotlib
 ipython
 sphinx
 myst-nb
+pydata-sphinx-theme

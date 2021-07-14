@@ -23,3 +23,46 @@ language_info:
 ---
 
 # NetworkX Pull Request Analysis
+
+Some basic analysis of the development history of NetworkX vis-a-vis pull
+requests.
+
+```{code-cell}
+import numpy as np
+import matplotlib.pyplot as plt
+import json
+
+fname = "../data/prs.json"
+with open(fname, 'r') as fh:
+    data = json.loads(fh.read())
+```
+
+## Merged pull requests over time
+
+```{code-cell}
+merged_prs = [d for d in data if d['node']['state'] == 'MERGED']
+merge_dates = np.array([r['node']['mergedAt'] for r in merged_prs], dtype=np.datetime64)
+binsize = np.timedelta64(14, 'D')
+date_bins = np.arange(merge_dates[0], merge_dates[-1], binsize)
+h, be = np.histogram(merge_dates, date_bins)
+bc = be[:-1] + binsize / 2
+smoothing_interval = 8  # in units of bin-width
+```
+
+```{code-cell}
+fig, ax = plt.subplots(figsize=(16, 12))
+ax.bar(bc, h, width=binsize, label="Raw")
+ax.plot(
+    bc,
+    np.convolve(h, np.ones(smoothing_interval), 'same') / smoothing_interval,
+    label=f"{binsize * smoothing_interval} moving average",
+    color='tab:orange',
+    linewidth=2.0,
+)
+fig.autofmt_xdate()
+
+ax.set_title('Merged PRs over time')
+ax.set_xlabel('Time')
+ax.set_ylabel(f'# Merged PRs / {binsize} interval')
+ax.legend()
+```
