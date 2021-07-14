@@ -54,6 +54,7 @@ ax.set_xlabel('Time')
 ax.set_ylabel('# Merged PRs / 2 week interval')
 ax.legend()
 annotate_with_dates(ax)
+plt.savefig("img/merges_vs_time.png", transparent=True)
 
 # First time contributors vs. time
 
@@ -97,5 +98,7 @@ ax.set_xlabel('Time')
 ax.set_ylabel('# Merged PRs from FTC / month')
 ax.legend()
 annotate_with_dates(ax)
+plt.savefig("img/firsttimecontribs_vs_time.png", transparent=True)
+
 
 plt.show()
