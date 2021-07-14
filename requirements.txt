@@ -4,3 +4,4 @@ ipython
 sphinx
 myst-nb
 pydata-sphinx-theme
+ghp-import
