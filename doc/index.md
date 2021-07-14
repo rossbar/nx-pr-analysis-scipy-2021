@@ -29,6 +29,9 @@ requests.
 
 
 ```{code-cell}
+---
+tags: [hide-input]
+---
 import numpy as np
 import matplotlib.pyplot as plt
 import json
