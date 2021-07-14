@@ -27,6 +27,7 @@ language_info:
 Some basic analysis of the development history of NetworkX vis-a-vis pull
 requests.
 
+
 ```{code-cell}
 import numpy as np
 import matplotlib.pyplot as plt
@@ -50,6 +51,42 @@ warnings.simplefilter("ignore")
 fname = "../data/prs.json"
 with open(fname, 'r') as fh:
     data = json.loads(fh.read())
+
+
+# Helper function for annotating plots with important project dates
+def annotate_with_dates(ax):
+    """Annotate axes with important dates from the project history.
+    
+    .. warning::
+       Dates are approximate!
+    """
+    # 1.0 -> 2.0 transition
+    x = np.datetime64("2017-01")
+    yt = 0.7 * ax.get_ylim()[-1]
+    ax.annotate(
+        "Major release:\nv1.0 -> v2.0",
+        xy=(x, 6),
+        xytext=(np.datetime64("2015-01"), yt),
+        arrowprops={"arrowstyle": "->"},
+        ha='center',
+        fontsize=20,
+    )
+    # CZI Grant
+    x = np.datetime64("2020-01")
+    ax.annotate(
+        "NX awarded CZI grant",
+        xy=(x, 6),
+        xytext=(np.datetime64("2019-06"), yt),
+        arrowprops={"arrowstyle": "->"},
+        ha='center',
+        fontsize=20,
+    )
+```
+
+```{note}
+The date annotations for project milestones (e.g. v2.0 release,
+CZI grant award date) should be interpreted as approximations spanning a
+roughly 6-month interval.
 ```
 
 ## Merged pull requests over time
@@ -80,6 +117,7 @@ ax.set_title('Merged PRs over time')
 ax.set_xlabel('Time')
 ax.set_ylabel(f'# Merged PRs / {binsize} interval')
 ax.legend();
+annotate_with_dates(ax)
 ```
 
 ## Number of First-Time Contributors over time
@@ -126,6 +164,5 @@ ax.set_title('First-time contributors')
 ax.set_xlabel('Time')
 ax.set_ylabel('# Merged PRs from FTC / month')
 ax.legend()
-
-plt.show()
+annotate_with_dates(ax)
 ```
