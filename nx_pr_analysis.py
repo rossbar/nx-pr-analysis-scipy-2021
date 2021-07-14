@@ -3,9 +3,32 @@ import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import json
 
-fname = "_data/prs.json"
+fname = "data/prs.json"
 with open(fname, 'r') as fh:
     data = json.loads(fh.read())
+
+def annotate_with_dates(ax):
+    """Annotate axes with important dates from the project history."""
+    # 1.0 -> 2.0 transition
+    x = np.datetime64("2017-06")
+    yt = 0.7 * ax.get_ylim()[-1]
+    ax.annotate(
+        "Major release:\nv1.0 -> v2.0",
+        xy=(x, 6),
+        xytext=(np.datetime64("2015-01"), yt),
+        arrowprops={"arrowstyle": "->"},
+        ha='center',
+    )
+    # CZI Grant
+    x = np.datetime64("2020-06")
+    ax.annotate(
+        "NX awarded CZI grant",
+        xy=(x, 6),
+        xytext=(np.datetime64("2019-06"), yt),
+        arrowprops={"arrowstyle": "->"},
+        ha='center',
+    )
+
     
 merged_prs = [d for d in data if d['node']['state'] == 'MERGED']
 merge_dates = np.array([r['node']['mergedAt'] for r in merged_prs], dtype=np.datetime64)
@@ -30,8 +53,7 @@ ax.set_title('Merged PRs over time')
 ax.set_xlabel('Time')
 ax.set_ylabel('# Merged PRs / 2 week interval')
 ax.legend()
-
-plt.show()
+annotate_with_dates(ax)
 
 # First time contributors vs. time
 
@@ -74,5 +96,6 @@ ax.set_title('First-time contributors')
 ax.set_xlabel('Time')
 ax.set_ylabel('# Merged PRs from FTC / month')
 ax.legend()
+annotate_with_dates(ax)
 
 plt.show()
