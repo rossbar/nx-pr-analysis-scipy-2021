@@ -44,6 +44,9 @@ mpl_params = {
 }
 plt.rcParams.update(mpl_params)
 
+import warnings
+warnings.simplefilter("ignore")
+
 fname = "../data/prs.json"
 with open(fname, 'r') as fh:
     data = json.loads(fh.read())
@@ -55,7 +58,6 @@ with open(fname, 'r') as fh:
 ---
 tags: [hide-input]
 ---
-
 merged_prs = [d for d in data if d['node']['state'] == 'MERGED']
 merge_dates = np.array([r['node']['mergedAt'] for r in merged_prs], dtype=np.datetime64)
 binsize = np.timedelta64(14, 'D')
@@ -86,7 +88,6 @@ ax.legend();
 ---
 tags: [hide-input]
 ---
-
 first_time_contributor = []
 prev_contrib = set()
 for record in merged_prs:
