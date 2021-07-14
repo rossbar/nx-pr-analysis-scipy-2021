@@ -32,6 +32,18 @@ import numpy as np
 import matplotlib.pyplot as plt
 import json
 
+# Some matplotlib settings
+mpl_params = {
+    "axes.titlesize": 24,
+    "axes.labelsize": 20,
+    "xtick.labelsize": 16,
+    "ytick.labelsize": 16,
+    "lines.linewidth": 4,
+    "legend.fontsize": 16,
+    "figure.figsize": (12, 4),
+}
+plt.rcParams.update(mpl_params)
+
 fname = "../data/prs.json"
 with open(fname, 'r') as fh:
     data = json.loads(fh.read())
@@ -57,12 +69,11 @@ ax.plot(
     np.convolve(h, np.ones(smoothing_interval), 'same') / smoothing_interval,
     label=f"{binsize * smoothing_interval} moving average",
     color='tab:orange',
-    linewidth=2.0,
 )
 fig.autofmt_xdate()
 
 ax.set_title('Merged PRs over time')
 ax.set_xlabel('Time')
 ax.set_ylabel(f'# Merged PRs / {binsize} interval')
-ax.legend()
+ax.legend();
 ```
